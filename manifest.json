@@ -1,0 +1,13 @@
+{
+    "name": "InteracriveBrokers Normalized Daily P&L",
+    "version": "1.0",
+    "description": "Shows daily P&L %. Requires position, avg price and daily p&l columns displayed. Also slightly brakes interface styles.",
+    "content_scripts": [
+      {
+        "matches": ["https://www.interactivebrokers.co.uk/portal/*"],
+        "js": ["norm_daily_pl.js"]
+      }
+    ],
+    "permissions": ["declarativeContent"],
+    "manifest_version": 2
+}
