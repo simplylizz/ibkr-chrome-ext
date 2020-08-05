@@ -62,9 +62,9 @@ setInterval(function () {
             position = parseInt(cells[positionIdx].innerText);
             avgPrice = parseFloat(cells[avgPriceIdx].innerText);
 
-            console.log("dpl", dailyPl);
-            console.log("pos", position);
-            console.log("avg", avgPrice);
+            // console.log("dpl", dailyPl);
+            // console.log("pos", position);
+            // console.log("avg", avgPrice);
    
             normalizedDailyPl = dailyPl / (position * avgPrice) * 100;
             
