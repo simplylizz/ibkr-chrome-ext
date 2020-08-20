@@ -1,9 +1,9 @@
 // we are talking about chrome of course
-console.log("CPU cycles destroying machine has been activated!");
 
 dailyPlIdx = -1;
 positionIdx = -1;
 avgPriceIdx = -1;
+normalizedDailyPlIdx = -1;
 initialized = false;
 
 
@@ -25,14 +25,8 @@ setInterval(function () {
         for (i = 0; i < tableHeader.length; i++) {
             if (tableHeader[i].textContent.indexOf("Position") !== -1) {
                 positionIdx = i;
-                if (dailyPlIdx != -1) { // going to insert a col after P&L
-                    positionIdx++;
-                }
             } else if (tableHeader[i].textContent.indexOf('Avg Price') !== -1){
                 avgPriceIdx = i;
-                if (dailyPlIdx != -1) { // going to insert a col after P&L
-                    avgPriceIdx++;
-                }
             } else if (tableHeader[i].textContent.indexOf('Daily P&L') !== -1) {
                 dailyPlIdx = i;
             }
@@ -43,11 +37,24 @@ setInterval(function () {
             return
         }
 
-        normalizedDailyPlIdx = dailyPlIdx+1;
+        // normalizedDailyPlIdx = dailyPlIdx+1;
         normalizedDailyPlIdx = rows[0].cells.length;
         rows[0].insertCell(normalizedDailyPlIdx).outerHTML = '<th><span class="_thc">Daily P&L %</span></th>';
-        for (i = 1; i < table.length; i++) {
-            rows[dailyPlIdx].insertCell(normalizedDailyPlIdx).outerHTML = '<td><span class="_thc">...</span></td>';
+        //console.log("Iterating over", rows.length, "rows");
+        for (i = 1; i < rows.length; i++) {
+            //console.log(rows[i].cells);
+            rows[i].insertCell(normalizedDailyPlIdx).outerHTML = '<td><span class="_thc">...</span></td>';
+            //console.log(rows[i].cells);
+            //console.log(normalizedDailyPlIdx);
+            //console.log(rows[i].cells[normalizedDailyPlIdx]);
+            //console.log(rows[i].cells[normalizedDailyPlIdx-1]);
+        }
+
+        if (positionIdx >= normalizedDailyPlIdx) {
+            positionIdx++;
+        }
+        if (avgPriceIdx >= normalizedDailyPlIdx) {
+            avgPriceIdx++;
         }
 
         initialized = true;
@@ -57,7 +64,7 @@ setInterval(function () {
         // console.log("setting norm pl");
         for (i = 1; i < rows.length; i++) {
             cells = rows[i].cells;
-    
+
             dailyPl = parseFloat(cells[dailyPlIdx].innerText);
             position = parseInt(cells[positionIdx].innerText);
             avgPrice = parseFloat(cells[avgPriceIdx].innerText);
@@ -65,9 +72,9 @@ setInterval(function () {
             // console.log("dpl", dailyPl);
             // console.log("pos", position);
             // console.log("avg", avgPrice);
-   
+
             normalizedDailyPl = dailyPl / (position * avgPrice) * 100;
-            
+
             cells[normalizedDailyPlIdx].innerHTML ='<span>' + normalizedDailyPl.toFixed(2) + '%</span>';
         }
     }
